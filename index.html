@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="index.css" />
+        <title>Tabuleiro Grid</title>
+        <script
+            src="https://kit.fontawesome.com/c8ab093792.js"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="tabuleiro grid">
+                <div class="locker green">
+                    <div>
+                        <div class="piece-start safe">
+                            <div class="piece green"></div>
+                        </div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                    </div>
+                </div>
+                <div class="cell-container-v grid">
+                    <div class="cell" id="cell-10"></div>
+                    <div class="cell" id="cell-11"></div>
+                    <div class="cell" id="cell-12"></div>
+                    <div class="cell" id="cell-9"></div>
+                    <div class="cell yellow" id=""></div>
+                    <div class="cell yellow" id="cell-13" data-safe></div>
+                    <div class="cell safe" id=" cell-8" data-safe>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="cell yellow" id=""></div>
+                    <div class="cell" id="cell-14"></div>
+                    <div class="cell" id="cell-7"></div>
+                    <div class="cell yellow" id=""></div>
+                    <div class="cell" id="cell-15"></div>
+                    <div class="cell" id="cell-6"></div>
+                    <div class="cell yellow" id=""></div>
+                    <div class="cell" id="cell-16"></div>
+                    <div class="cell" id="cell-5"></div>
+                    <div class="cell yellow" id=""></div>
+                    <div class="cell" id="cell-17"></div>
+                </div>
+                <div class="locker yellow">
+                    <div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                    </div>
+                </div>
+                <div class="cell-container-h grid">
+                    <div class="cell" id="cell-51"></div>
+                    <div class="cell green" id="cell-0" data-safe>
+                        <div class="piece green"></div>
+                    </div>
+                    <div class="cell" id="cell-1">
+                        <div class="piece green"></div>
+                    </div>
+                    <div class="cell" id="cell-2"></div>
+                    <div class="cell" id="cell-3"></div>
+                    <div class="cell" id="cell-4"></div>
+                    <div class="cell" id="cell-50"></div>
+                    <div class="cell green" id=""></div>
+                    <div class="cell green" id=""></div>
+                    <div class="cell green" id=""></div>
+                    <div class="cell green" id=""></div>
+                    <div class="cell green" id=""></div>
+                    <div class="cell" id="cell-49"></div>
+                    <div class="cell" id="cell-48"></div>
+                    <div class="cell safe" id="cell-47" data-safe>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="cell" id="cell-46"></div>
+                    <div class="cell" id="cell-45"></div>
+                    <div class="cell" id="cell-44"></div>
+                </div>
+                <div class="meio"><div></div></div>
+                <div class="cell-container-h grid">
+                    <div class="cell" id="cell-18"></div>
+                    <div class="cell" id="cell-19"></div>
+                    <div class="cell" id="cell-20"></div>
+                    <div class="cell safe" id="cell-21" data-safe>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="cell" id="cell-22"></div>
+                    <div class="cell" id="cell-23"></div>
+                    <div class="cell blue" id=""></div>
+                    <div class="cell blue" id=""></div>
+                    <div class="cell blue" id=""></div>
+                    <div class="cell blue" id=""></div>
+                    <div class="cell blue" id=""></div>
+                    <div class="cell" id="cell-24"></div>
+                    <div class="cell" id="cell-30"></div>
+                    <div class="cell" id="cell-29"></div>
+                    <div class="cell" id="cell-28"></div>
+                    <div class="cell" id="cell-27"></div>
+                    <div class="cell blue" id="cell-26" data-safe></div>
+                    <div class="cell" id="cell-25"></div>
+                </div>
+                <div class="locker red">
+                    <div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                    </div>
+                </div>
+                <div class="cell-container-v grid">
+                    <div class="cell" id="cell-43"></div>
+                    <div class="cell red" id=""></div>
+                    <div class="cell" id="cell-31"></div>
+                    <div class="cell" id="cell-42"></div>
+                    <div class="cell red" id=""></div>
+                    <div class="cell" id="cell-32"></div>
+                    <div class="cell" id="cell-41"></div>
+                    <div class="cell red" id=""></div>
+                    <div class="cell" id="cell-33"></div>
+                    <div class="cell" id="cell-40"></div>
+                    <div class="cell red" id=""></div>
+                    <div class="cell safe" id="cell-34" data-safe>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="cell red" id="cell-39" data-safe></div>
+                    <div class="cell red" id=""></div>
+                    <div class="cell" id="cell-35"></div>
+                    <div class="cell" id="cell-38"></div>
+                    <div class="cell" id="cell-37"></div>
+                    <div class="cell" id="cell-36"></div>
+                </div>
+                <div class="locker blue">
+                    <div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                        <div class="piece-start safe"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
