@@ -19,6 +19,7 @@
 body {
     background-color: var(--background-primary);
     height: 100vh;
+    padding: 10px;
 }
 
 .container {
