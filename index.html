@@ -12,8 +12,30 @@
     </head>
     <body>
         <div class="container">
-            <div class="player-card green"></div>
-            <div class="player-card yellow"></div>
+            <div class="player-card green" onclick="showPlayerForm(this)">
+                <form action="" hidden>
+                    <input
+                        type="text"
+                        value="Verde"
+                        name="player-name"
+                        title="Nome do jogador"
+                        required
+                    />
+                    <button onclick="">Adicionar</button>
+                </form>
+            </div>
+            <div class="player-card yellow" onclick="showPlayerForm(this)">
+                <form action="" hidden>
+                    <input
+                        type="text"
+                        value="Amarelo"
+                        name="player-name"
+                        title="Nome do jogador"
+                        required
+                    />
+                    <button onclick="">Adicionar</button>
+                </form>
+            </div>
 
             <div class="container-tab">
                 <div class="tabuleiro grid">
@@ -147,8 +169,31 @@
                 </div>
             </div>
 
-            <div class="player-card red"></div>
-            <div class="player-card blue"></div>
+            <div class="player-card red" onclick="showPlayerForm(this)">
+                <form action="" hidden>
+                    <input
+                        type="text"
+                        value="Vermelho"
+                        name="player-name"
+                        title="Nome do jogador"
+                        required
+                    />
+                    <button onclick="">Adicionar</button>
+                </form>
+            </div>
+            <div class="player-card blue" onclick="showPlayerForm(this)">
+                <form action="" hidden>
+                    <input
+                        type="text"
+                        value="Azul"
+                        name="player-name"
+                        title="Nome do jogador"
+                        required
+                    />
+                    <button onclick="">Adicionar</button>
+                </form>
+            </div>
         </div>
+        <script src="index.js"></script>
     </body>
 </html>
