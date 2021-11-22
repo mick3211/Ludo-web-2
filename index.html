@@ -13,7 +13,12 @@
     <body>
         <div class="container">
             <div class="player-card green" onclick="showPlayerForm(this)">
-                <form action="" hidden>
+                <form
+                    action=""
+                    name="green-form"
+                    hidden
+                    onsubmit="event.preventDefault()"
+                >
                     <input
                         type="text"
                         value="Verde"
@@ -21,11 +26,16 @@
                         title="Nome do jogador"
                         required
                     />
-                    <button onclick="">Adicionar</button>
+                    <button
+                        type="submit"
+                        onclick="createPlayerFromCard(this.parentElement, 'green', 'cell-0')"
+                    >
+                        Adicionar
+                    </button>
                 </form>
             </div>
             <div class="player-card yellow" onclick="showPlayerForm(this)">
-                <form action="" hidden>
+                <form action="" hidden onsubmit="event.preventDefault()">
                     <input
                         type="text"
                         value="Amarelo"
@@ -33,7 +43,12 @@
                         title="Nome do jogador"
                         required
                     />
-                    <button onclick="">Adicionar</button>
+                    <button
+                        type="submit"
+                        onclick="createPlayerFromCard(this.parentElement, 'yellow', 'cell-13')"
+                    >
+                        Adicionar
+                    </button>
                 </form>
             </div>
 
@@ -41,12 +56,22 @@
                 <div class="tabuleiro grid">
                     <div class="locker green">
                         <div>
-                            <div class="piece-start safe">
-                                <div class="piece green"></div>
-                            </div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
+                            <div
+                                class="piece-start safe"
+                                id="green-lock-0"
+                            ></div>
+                            <div
+                                class="piece-start safe"
+                                id="green-lock-1"
+                            ></div>
+                            <div
+                                class="piece-start safe"
+                                id="green-lock-2"
+                            ></div>
+                            <div
+                                class="piece-start safe"
+                                id="green-lock-3"
+                            ></div>
                         </div>
                     </div>
                     <div class="cell-container-v grid">
@@ -73,20 +98,28 @@
                     </div>
                     <div class="locker yellow">
                         <div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
+                            <div
+                                class="piece-start safe"
+                                id="yellow-lock-0"
+                            ></div>
+                            <div
+                                class="piece-start safe"
+                                id="yellow-lock-1"
+                            ></div>
+                            <div
+                                class="piece-start safe"
+                                id="yellow-lock-2"
+                            ></div>
+                            <div
+                                class="piece-start safe"
+                                id="yellow-lock-3"
+                            ></div>
                         </div>
                     </div>
                     <div class="cell-container-h grid">
                         <div class="cell" id="cell-51"></div>
-                        <div class="cell green" id="cell-0" data-safe>
-                            <div class="piece green"></div>
-                        </div>
-                        <div class="cell" id="cell-1">
-                            <div class="piece green"></div>
-                        </div>
+                        <div class="cell green" id="cell-0" data-safe></div>
+                        <div class="cell" id="cell-1"></div>
                         <div class="cell" id="cell-2"></div>
                         <div class="cell" id="cell-3"></div>
                         <div class="cell" id="cell-4"></div>
@@ -130,10 +163,10 @@
                     </div>
                     <div class="locker red">
                         <div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
+                            <div class="piece-start safe" id="red-lock-0"></div>
+                            <div class="piece-start safe" id="red-lock-1"></div>
+                            <div class="piece-start safe" id="red-lock-2"></div>
+                            <div class="piece-start safe" id="red-lock-3"></div>
                         </div>
                     </div>
                     <div class="cell-container-v grid">
@@ -160,17 +193,29 @@
                     </div>
                     <div class="locker blue">
                         <div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
-                            <div class="piece-start safe"></div>
+                            <div
+                                class="piece-start safe"
+                                id="blue-lock-0"
+                            ></div>
+                            <div
+                                class="piece-start safe"
+                                id="blue-lock-1"
+                            ></div>
+                            <div
+                                class="piece-start safe"
+                                id="blue-lock-2"
+                            ></div>
+                            <div
+                                class="piece-start safe"
+                                id="blue-lock-3"
+                            ></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="player-card red" onclick="showPlayerForm(this)">
-                <form action="" hidden>
+                <form action="" hidden onsubmit="event.preventDefault()">
                     <input
                         type="text"
                         value="Vermelho"
@@ -178,11 +223,16 @@
                         title="Nome do jogador"
                         required
                     />
-                    <button onclick="">Adicionar</button>
+                    <button
+                        type="submit"
+                        onclick="createPlayerFromCard(this.parentElement, 'red', 'cell-39')"
+                    >
+                        Adicionar
+                    </button>
                 </form>
             </div>
             <div class="player-card blue" onclick="showPlayerForm(this)">
-                <form action="" hidden>
+                <form action="" hidden onsubmit="event.preventDefault()">
                     <input
                         type="text"
                         value="Azul"
@@ -190,7 +240,12 @@
                         title="Nome do jogador"
                         required
                     />
-                    <button onclick="">Adicionar</button>
+                    <button
+                        type="submit"
+                        onclick="createPlayerFromCard(this.parentElement, 'blue', 'cell-26')"
+                    >
+                        Adicionar
+                    </button>
                 </form>
             </div>
         </div>
