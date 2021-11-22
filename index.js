@@ -4,8 +4,6 @@ class Piece {
         this.lock = document.getElementById(lockId);
         this.face = document.createElement('div');
         this.face.className = `piece ${color}`;
-
-        this.reset();
     }
 
     reset() {
@@ -38,7 +36,23 @@ class Game {
     addPlayer(player) {
         if (this.playerList.length < 4) {
             this.playerList.push(player);
+
+            for (let piece of player.pieces) {
+                piece.reset();
+            }
+
             console.log('Jogador adicionado:', player);
+        }
+    }
+
+    start(button) {
+        if (this.playerList.length < 2) {
+            alert(
+                'São necessários pelo menos 2 jogadores para iniciar o jogo!'
+            );
+        } else {
+            console.log('Jogo Iniciado');
+            button.hidden = true;
         }
     }
 }

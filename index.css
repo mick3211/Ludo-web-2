@@ -212,6 +212,13 @@ body {
     left: 0;
 }
 
+#start {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 @media screen and (min-width: 830px) {
     .meio > div {
         border-top: 79.6px solid var(--yellow);
