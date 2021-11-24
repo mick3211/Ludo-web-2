@@ -56,6 +56,27 @@ class Player {
     }
 }
 
+class Dice {
+    constructor(sides) {
+        this.sides = sides;
+        this.face = document.createElement('div');
+        this.face.className = 'dice';
+
+        this.roll();
+    }
+
+    roll() {
+        this.value = Math.round(Math.random() * this.sides);
+        this.face.innerText = this.value;
+    }
+
+    draw(target, x, y) {
+        this.face.style.top = y + 'px';
+        this.face.style.left = x + 'px';
+        target.appendChild(this.face);
+    }
+}
+
 class Game {
     #instance = null;
 
@@ -65,11 +86,20 @@ class Game {
         }
         this.#instance = this;
         this.playerList = [];
+        this.diceList = [];
+        this.lockDiceRoll = true;
     }
 
     addPlayer(player) {
         this.playerList.push(player);
         console.log('Jogador adicionado:', player);
+    }
+
+    nextPlayer() {
+        const next =
+            (this.playerList.indexOf(this.currentPlayer) + 1) %
+            this.playerList.length;
+        return this.playerList[next];
     }
 
     start() {
@@ -80,6 +110,9 @@ class Game {
         } else {
             document.getElementById('start').hidden = true;
             console.log('Jogo Iniciado');
+            this.currentPlayer = this.nextPlayer();
+            console.log('jogador atual:', this.currentPlayer);
+            this.lockDiceRoll = false;
         }
     }
 }
@@ -104,3 +137,20 @@ for (let i = 0; i < 52; i++) {
     const cell = document.getElementById(`cell-${i}`);
     tableCells.push(cell);
 }
+
+const diceRolledEvent = new Event('diceRolled');
+
+var diceCount = 0;
+document.body.onclick = ev => {
+    if (ev.target.id === 'main-container' && !game.lockDiceRoll) {
+        const dice = new Dice(6);
+        dice.draw(ev.target, ev.layerX, ev.layerY);
+        game.diceList.push(dice);
+        diceCount++;
+
+        if (dice.value !== 6 || diceCount === 3) {
+            game.lockDiceRoll = true;
+            diceCount = 0;
+        }
+    }
+};
