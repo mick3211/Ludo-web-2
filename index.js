@@ -72,14 +72,14 @@ class Game {
         console.log('Jogador adicionado:', player);
     }
 
-    start(button) {
+    start() {
         if (this.playerList.length < 2) {
             alert(
                 'São necessários pelo menos 2 jogadores para iniciar o jogo!'
             );
         } else {
+            document.getElementById('start').hidden = true;
             console.log('Jogo Iniciado');
-            button.hidden = true;
         }
     }
 }
