@@ -62,6 +62,8 @@ class Dice {
         this.face = document.createElement('div');
         this.face.className = 'dice';
 
+        this.face.addEventListener('click', () => (game.selectedDice = this));
+
         this.roll();
     }
 
@@ -87,7 +89,11 @@ class Game {
         this.#instance = this;
         this.playerList = [];
         this.diceList = [];
+
+        this._selectedDice = null;
+
         this.lockDiceRoll = true;
+        this.lockDiceSelect = true;
     }
 
     addPlayer(player) {
@@ -100,6 +106,18 @@ class Game {
             (this.playerList.indexOf(this.currentPlayer) + 1) %
             this.playerList.length;
         return this.playerList[next];
+    }
+
+    /**
+     * @param {Dice} dice
+     */
+    set selectedDice(dice) {
+        if (!this.lockDiceSelect) {
+            if (this._selectedDice) this._selectedDice.className = 'dice';
+
+            dice.face.classList.add('selected');
+            this._selectedDice = dice;
+        }
     }
 
     start() {
@@ -151,6 +169,7 @@ document.body.onclick = ev => {
         if (dice.value !== 6 || diceCount === 3) {
             game.lockDiceRoll = true;
             diceCount = 0;
+            window.dispatchEvent(diceRolledEvent);
         }
     }
 };
