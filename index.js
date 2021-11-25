@@ -68,14 +68,26 @@ class Dice {
     }
 
     roll() {
-        this.value = Math.round(Math.random() * this.sides);
-        this.face.innerText = this.value;
+        this.value = Math.round(Math.random() * (this.sides - 1) + 1);
+        return this.value;
     }
 
     draw(target, x, y) {
         this.face.style.top = y + 'px';
         this.face.style.left = x + 'px';
         target.appendChild(this.face);
+    }
+
+    /**
+     * @param {number} value
+     */
+    set value(value) {
+        this._value = value;
+        this.face.innerText = this._value;
+    }
+
+    get value() {
+        return this._value;
     }
 }
 
@@ -113,11 +125,15 @@ class Game {
      */
     set selectedDice(dice) {
         if (!this.lockDiceSelect) {
-            if (this._selectedDice) this._selectedDice.className = 'dice';
+            if (this.selectedDice) this.selectedDice.face.className = 'dice';
 
             dice.face.classList.add('selected');
             this._selectedDice = dice;
         }
+    }
+
+    get selectedDice() {
+        return this._selectedDice;
     }
 
     start() {
@@ -168,6 +184,7 @@ document.body.onclick = ev => {
 
         if (dice.value !== 6 || diceCount === 3) {
             game.lockDiceRoll = true;
+            game.lockDiceSelect = false;
             diceCount = 0;
             window.dispatchEvent(diceRolledEvent);
         }
