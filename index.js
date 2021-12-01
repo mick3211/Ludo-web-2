@@ -68,7 +68,7 @@ class Dice {
     }
 
     roll() {
-        this.value = Math.round(Math.random() * (this.sides - 1) + 1);
+        this.value = Math.round(Math.random() * (this.sides - 1)) + 1;
         return this.value;
     }
 
@@ -91,66 +91,6 @@ class Dice {
     }
 }
 
-class Game {
-    #instance = null;
-
-    constructor() {
-        if (this.#instance) {
-            return this.#instance;
-        }
-        this.#instance = this;
-        this.playerList = [];
-        this.diceList = [];
-
-        this._selectedDice = null;
-
-        this.lockDiceRoll = true;
-        this.lockDiceSelect = true;
-    }
-
-    addPlayer(player) {
-        this.playerList.push(player);
-        console.log('Jogador adicionado:', player);
-    }
-
-    nextPlayer() {
-        const next =
-            (this.playerList.indexOf(this.currentPlayer) + 1) %
-            this.playerList.length;
-        return this.playerList[next];
-    }
-
-    /**
-     * @param {Dice} dice
-     */
-    set selectedDice(dice) {
-        if (!this.lockDiceSelect) {
-            if (this.selectedDice) this.selectedDice.face.className = 'dice';
-
-            dice.face.classList.add('selected');
-            this._selectedDice = dice;
-        }
-    }
-
-    get selectedDice() {
-        return this._selectedDice;
-    }
-
-    start() {
-        if (this.playerList.length < 2) {
-            alert(
-                'São necessários pelo menos 2 jogadores para iniciar o jogo!'
-            );
-        } else {
-            document.getElementById('start').hidden = true;
-            console.log('Jogo Iniciado');
-            this.currentPlayer = this.nextPlayer();
-            console.log('jogador atual:', this.currentPlayer);
-            this.lockDiceRoll = false;
-        }
-    }
-}
-
 function showPlayerForm(card) {
     card.classList.add('no-before');
     const form = card.firstElementChild;
@@ -164,8 +104,58 @@ function createPlayerFromCard(form, color, pieceStartCellId) {
     form.firstElementChild.setAttributeNode(disable);
 }
 
-const game = new Game();
+const game = {
+    playerList: [],
+    diceList: [],
+    _selectedDice: null,
+    lockDiceRoll: true,
+    lockDiceSelect: true,
+
+    addPlayer(player) {
+        this.playerList.push(player);
+        console.log('Jogador adicionado:', player);
+    },
+
+    nextPlayer() {
+        const next =
+            (this.playerList.indexOf(this.currentPlayer) + 1) %
+            this.playerList.length;
+        return this.playerList[next];
+    },
+
+    /**
+     * @param {Dice} dice
+     */
+    set selectedDice(dice) {
+        if (!this.lockDiceSelect) {
+            if (this.selectedDice) this.selectedDice.face.className = 'dice';
+
+            dice.face.classList.add('selected');
+            this._selectedDice = dice;
+        }
+    },
+
+    get selectedDice() {
+        return this._selectedDice;
+    },
+
+    start() {
+        if (this.playerList.length < 2) {
+            alert(
+                'São necessários pelo menos 2 jogadores para iniciar o jogo!'
+            );
+        } else {
+            document.getElementById('start').hidden = true;
+            console.log('Jogo Iniciado');
+            this.currentPlayer = this.nextPlayer();
+            console.log('jogador atual:', this.currentPlayer);
+            this.lockDiceRoll = false;
+        }
+    },
+};
+
 const tableCells = [];
+const mainContainer = document.getElementById('main-container');
 
 for (let i = 0; i < 52; i++) {
     const cell = document.getElementById(`cell-${i}`);
@@ -175,8 +165,8 @@ for (let i = 0; i < 52; i++) {
 const diceRolledEvent = new Event('diceRolled');
 
 var diceCount = 0;
-document.body.onclick = ev => {
-    if (ev.target.id === 'main-container' && !game.lockDiceRoll) {
+mainContainer.addEventListener('click', function (ev) {
+    if (ev.target === this && !game.lockDiceRoll) {
         const dice = new Dice(6);
         dice.draw(ev.target, ev.layerX, ev.layerY);
         game.diceList.push(dice);
@@ -189,4 +179,4 @@ document.body.onclick = ev => {
             window.dispatchEvent(diceRolledEvent);
         }
     }
-};
+});
