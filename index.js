@@ -4,6 +4,14 @@ class Piece {
         this.lock = document.getElementById(lockId);
         this.face = document.createElement('div');
         this.face.className = `piece ${color}`;
+        this.clickEvent = false;
+
+        this.face.addEventListener('click', () => {
+            if (this.clickEvent) {
+                this.move(game.useSelectedDice());
+                game.currentPlayer.startPlay();
+            }
+        });
 
         this.reset();
     }
@@ -17,11 +25,13 @@ class Piece {
 
     unlock() {
         this.startCell.appendChild(this.face);
-        this.pos = this.startCell.id.match(/\d+/).at(0);
+        this.pos = parseInt(this.startCell.id.match(/\d+/).at(0));
+        console.log('desbloqueado at:', this.pos);
         this.locked = false;
     }
 
     move(n) {
+        console.log('movendo', n, (this.pos + n) % 52);
         if (this.locked) {
             if (n === 6) {
                 this.unlock();
@@ -54,6 +64,29 @@ class Player {
 
         game.addPlayer(this);
     }
+
+    resetPiecesStyle() {
+        for (let piece of this.pieces) {
+            piece.face.classList.remove('valid');
+            piece.clickEvent = false;
+        }
+    }
+
+    startPlay() {
+        if (game.diceList.length > 0) {
+            game.selectedDice = game.diceList[0];
+            if (game.avaliablePieces.length === 0) {
+                game.useSelectedDice();
+                this.startPlay();
+            } else if (game.avaliablePieces.length === 1) {
+                game.avaliablePieces[0].move(game.useSelectedDice());
+                this.startPlay();
+            }
+        } else {
+            this.resetPiecesStyle();
+            game.nextPlayer();
+        }
+    }
 }
 
 class Dice {
@@ -62,7 +95,11 @@ class Dice {
         this.face = document.createElement('div');
         this.face.className = 'dice';
 
-        this.face.addEventListener('click', () => (game.selectedDice = this));
+        this.face.addEventListener('click', () => {
+            if (!game.lockDiceSelect) {
+                game.selectedDice = this;
+            }
+        });
 
         this.roll();
     }
@@ -110,6 +147,7 @@ const game = {
     _selectedDice: null,
     lockDiceRoll: true,
     lockDiceSelect: true,
+    avaliablePieces: null,
 
     addPlayer(player) {
         this.playerList.push(player);
@@ -120,7 +158,43 @@ const game = {
         const next =
             (this.playerList.indexOf(this.currentPlayer) + 1) %
             this.playerList.length;
-        return this.playerList[next];
+
+        this.lockDiceRoll = false;
+        this.lockDiceSelect = true;
+
+        for (let dice of this.diceList) {
+            this.selectedDice = dice;
+            this.useSelectedDice;
+        }
+
+        this.currentPlayer = this.playerList[next];
+        console.log('jogador atual:', this.currentPlayer);
+    },
+
+    filterPieces(value) {
+        const validPieces = [];
+        const playerPieces = this.currentPlayer.pieces;
+
+        this.currentPlayer.resetPiecesStyle();
+
+        playerPieces.filter(piece => {
+            if (
+                (!piece.locked && piece.steps + value < 57) ||
+                (piece.locked && value === 6)
+            ) {
+                piece.face.classList.add('valid');
+                piece.clickEvent = true;
+                validPieces.push(piece);
+            }
+        });
+        this.avaliablePieces = validPieces;
+    },
+
+    useSelectedDice() {
+        const dice = this.selectedDice;
+
+        dice.face.parentElement.removeChild(dice.face);
+        return this.diceList.splice(this.diceList.indexOf(dice), 1)[0].value;
     },
 
     /**
@@ -133,6 +207,8 @@ const game = {
             dice.face.classList.add('selected');
             this._selectedDice = dice;
         }
+
+        this.filterPieces(dice.value);
     },
 
     get selectedDice() {
@@ -145,11 +221,11 @@ const game = {
                 'São necessários pelo menos 2 jogadores para iniciar o jogo!'
             );
         } else {
+            this.lockDiceRoll = false;
             document.getElementById('start').hidden = true;
             console.log('Jogo Iniciado');
-            this.currentPlayer = this.nextPlayer();
+            this.currentPlayer = this.playerList[0];
             console.log('jogador atual:', this.currentPlayer);
-            this.lockDiceRoll = false;
         }
     },
 };
@@ -162,8 +238,6 @@ for (let i = 0; i < 52; i++) {
     tableCells.push(cell);
 }
 
-const diceRolledEvent = new Event('diceRolled');
-
 var diceCount = 0;
 mainContainer.addEventListener('click', function (ev) {
     if (ev.target === this && !game.lockDiceRoll) {
@@ -172,11 +246,14 @@ mainContainer.addEventListener('click', function (ev) {
         game.diceList.push(dice);
         diceCount++;
 
-        if (dice.value !== 6 || diceCount === 3) {
+        if (diceCount === 3 && dice.value === 6) {
+            game.nextPlayer();
+            diceCount = 0;
+        } else if (dice.value !== 6) {
             game.lockDiceRoll = true;
             game.lockDiceSelect = false;
+            game.currentPlayer.startPlay();
             diceCount = 0;
-            window.dispatchEvent(diceRolledEvent);
         }
     }
 });
