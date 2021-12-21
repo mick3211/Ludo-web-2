@@ -1,6 +1,9 @@
+//Terminar check de comer
+
 class Piece {
     constructor(color, startCellId, lockId) {
-        this.startCell = document.getElementById(startCellId);
+        this.startCell = tableCells[startCellId];
+        this.color = color;
         this.lock = document.getElementById(lockId);
         this.face = document.createElement('div');
         this.face.className = `piece ${color}`;
@@ -17,6 +20,9 @@ class Piece {
     }
 
     reset() {
+        if (this.pos) {
+            tableCells[this.pos].popPiece(this);
+        }
         this.lock.appendChild(this.face);
         this.pos = -1;
         this.steps = 0;
@@ -24,8 +30,8 @@ class Piece {
     }
 
     unlock() {
-        this.startCell.appendChild(this.face);
-        this.pos = parseInt(this.startCell.id.match(/\d+/).at(0));
+        this.startCell.addPiece(this);
+        this.pos = tableCells.indexOf(this.startCell);
         console.log('desbloqueado at:', this.pos);
         this.locked = false;
     }
@@ -39,11 +45,26 @@ class Piece {
             } else return false;
         }
 
-        tableCells[(this.pos + n) % 52].appendChild(this.face);
+        tableCells[this.pos].popPiece(this);
         //check cells
         this.pos = (this.pos + n) % 52;
+        tableCells[this.pos].addPiece(this);
         //check cells
         return true;
+    }
+
+    checkForKill() {
+        const cell = tableCells[this.pos];
+
+        if (!cell.safe) {
+            if (cell.pieces.length === 1) {
+                if (cell.pieces[0].color !== this.color) {
+                    cell.pieces[0].reset();
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 
@@ -177,7 +198,7 @@ const game = {
 
         this.currentPlayer.resetPiecesStyle();
 
-        playerPieces.filter(piece => {
+        playerPieces.forEach(piece => {
             if (
                 (!piece.locked && piece.steps + value < 57) ||
                 (piece.locked && value === 6)
@@ -235,7 +256,19 @@ const mainContainer = document.getElementById('main-container');
 
 for (let i = 0; i < 52; i++) {
     const cell = document.getElementById(`cell-${i}`);
-    tableCells.push(cell);
+    tableCells.push({
+        htmlElement: cell,
+        pieces: [],
+        safe: cell.hasAttribute('data-safe'),
+        popPiece(el) {
+            this.htmlElement.removeChild(el.face);
+            return this.pieces.splice(this.pieces.indexOf(el), 1);
+        },
+        addPiece(el) {
+            this.htmlElement.appendChild(el.face);
+            this.pieces.push(el);
+        },
+    });
 }
 
 var diceCount = 0;
