@@ -1,3 +1,153 @@
+//terminar check de kill
+class Piece {
+    constructor(color, startCellId, lockId) {
+        this.startCell = tableCells[startCellId];
+        this.color = color;
+        this.lock = document.getElementById(lockId);
+        this.face = document.createElement('div');
+        this.face.className = `piece ${color}`;
+        this.clickEvent = false;
+
+        this.face.addEventListener('click', () => {
+            if (this.clickEvent) {
+                this.move(game.useSelectedDice());
+                game.currentPlayer.startPlay();
+            }
+        });
+
+        this.reset();
+    }
+
+    reset() {
+        if (this.pos) {
+            tableCells[this.pos].popPiece(this);
+        }
+        this.lock.appendChild(this.face);
+        this.pos = -1;
+        this.steps = 0;
+        this.locked = true;
+    }
+
+    unlock() {
+        this.startCell.addPiece(this);
+        this.pos = tableCells.indexOf(this.startCell);
+        console.log('desbloqueado at:', this.pos);
+        this.locked = false;
+    }
+
+    move(n) {
+        console.log('movendo', n, (this.pos + n) % 52);
+        if (this.locked) {
+            if (n === 6) {
+                this.unlock();
+                return true;
+            } else return false;
+        }
+
+        tableCells[this.pos].popPiece(this);
+        //check cells
+        this.pos = (this.pos + n) % 52;
+        tableCells[this.pos].addPiece(this);
+        //check cells
+        return true;
+    }
+
+    checkForKill() {
+        const cell = tableCells[this.pos];
+
+        if (!cell.safe) {
+            if (cell.pieces.length === 1) {
+                if (cell.pieces[0].color !== this.color) {
+                    cell.pieces[0].reset();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+class Player {
+    constructor(name, color, pieceStartCellId) {
+        if (game.playerList.length >= 4) {
+            throw new Error('Número máximo de jogadores atingido');
+        }
+
+        this.name = name;
+        this.color = color;
+        this.pieces = [
+            new Piece(color, pieceStartCellId, `${color}-lock-0`),
+            new Piece(color, pieceStartCellId, `${color}-lock-1`),
+            new Piece(color, pieceStartCellId, `${color}-lock-2`),
+            new Piece(color, pieceStartCellId, `${color}-lock-3`),
+        ];
+
+        game.addPlayer(this);
+    }
+
+    resetPiecesStyle() {
+        for (let piece of this.pieces) {
+            piece.face.classList.remove('valid');
+            piece.clickEvent = false;
+        }
+    }
+
+    startPlay() {
+        if (game.diceList.length > 0) {
+            game.selectedDice = game.diceList[0];
+            if (game.avaliablePieces.length === 0) {
+                game.useSelectedDice();
+                this.startPlay();
+            } else if (game.avaliablePieces.length === 1) {
+                game.avaliablePieces[0].move(game.useSelectedDice());
+                this.startPlay();
+            }
+        } else {
+            this.resetPiecesStyle();
+            game.nextPlayer();
+        }
+    }
+}
+
+class Dice {
+    constructor(sides) {
+        this.sides = sides;
+        this.face = document.createElement('div');
+        this.face.className = 'dice';
+
+        this.face.addEventListener('click', () => {
+            if (!game.lockDiceSelect) {
+                game.selectedDice = this;
+            }
+        });
+
+        this.roll();
+    }
+
+    roll() {
+        this.value = Math.round(Math.random() * (this.sides - 1)) + 1;
+        return this.value;
+    }
+
+    draw(target, x, y) {
+        this.face.style.top = y + 'px';
+        this.face.style.left = x + 'px';
+        target.appendChild(this.face);
+    }
+
+    /**
+     * @param {number} value
+     */
+    set value(value) {
+        this._value = value;
+        this.face.innerText = this._value;
+    }
+
+    get value() {
+        return this._value;
+    }
+}
+
 function showPlayerForm(card) {
     card.classList.add('no-before');
     const form = card.firstElementChild;
