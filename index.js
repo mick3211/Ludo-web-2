@@ -1,16 +1,18 @@
 import Table from './table.js';
 
-var table = new Table();
+export var table = new Table();
 
 class Piece {
-    constructor(color, startCellId, lockId) {
-        this.startCell = table.cells[startCellId];
+    constructor(color, startPos, lockId, mainPath, finalPath) {
+        this.startPos = startPos;
+        this.mainPath = mainPath;
+        this.finalPath = finalPath;
+        this.path = mainPath;
         this.color = color;
         this.lock = document.getElementById(lockId);
         this.face = document.createElement('div');
         this.face.className = `piece ${color}`;
         this.clickEvent = false;
-        this.finalPath = [];
 
         this.face.addEventListener('click', () => {
             if (this.clickEvent) {
@@ -50,7 +52,7 @@ class Piece {
     }
 
     unlock() {
-        this.startCell.addPiece(this);
+        this.path[this.startPos].addPiece(this);
         this.pos = table.cells.indexOf(this.startCell);
         console.log('desbloqueado at:', this.pos);
         this.locked = false;
@@ -84,49 +86,6 @@ class Piece {
         } else return false;
 
         return true;
-    }
-}
-
-class Player {
-    constructor(name, color, pieceStartCellId) {
-        if (game.playerList.length >= 4) {
-            throw new Error('Número máximo de jogadores atingido');
-        }
-
-        this.name = name;
-        this.color = color;
-        this.pieces = [
-            new Piece(color, pieceStartCellId, `${color}-lock-0`),
-            new Piece(color, pieceStartCellId, `${color}-lock-1`),
-            new Piece(color, pieceStartCellId, `${color}-lock-2`),
-            new Piece(color, pieceStartCellId, `${color}-lock-3`),
-        ];
-
-        game.addPlayer(this);
-    }
-
-    resetPiecesStyle() {
-        for (let piece of this.pieces) {
-            piece.face.classList.remove('valid');
-            piece.clickEvent = false;
-        }
-    }
-
-    startPlay() {
-        if (game.lockDiceRoll) {
-            if (game.diceList.length > 0) {
-                game.selectedDice = game.diceList[0];
-                if (game.avaliablePieces.length === 0) {
-                    game.useSelectedDice();
-                    this.startPlay();
-                } else if (game.avaliablePieces.length === 1) {
-                    game.avaliablePieces[0].move(game.useSelectedDice());
-                    this.startPlay();
-                }
-            } else {
-                game.nextPlayer();
-            }
-        }
     }
 }
 
@@ -168,19 +127,6 @@ class Dice {
     get value() {
         return this._value;
     }
-}
-
-function showPlayerForm(card) {
-    card.classList.add('no-before');
-    const form = card.firstElementChild;
-    form.hidden = false;
-}
-
-function createPlayerFromCard(form, color, pieceStartCellId) {
-    const disable = document.createAttribute('disabled');
-    new Player(form.firstElementChild.value, color, pieceStartCellId);
-    form.removeChild(form.lastElementChild);
-    form.firstElementChild.setAttributeNode(disable);
 }
 
 const game = {

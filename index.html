@@ -13,7 +13,7 @@
 
     <body>
         <div class="container" id="main-container">
-            <div class="player-card green" onclick="showPlayerForm(this)">
+            <div class="player-card green" meta-color="green">
                 <form
                     action=""
                     name="green-form"
@@ -27,18 +27,13 @@
                         title="Nome do jogador"
                         required
                     />
-                    <button
-                        type="submit"
-                        onclick="createPlayerFromCard(this.parentElement, 'green', 0)"
-                    >
-                        Adicionar
-                    </button>
+                    <button type="submit">Adicionar</button>
                 </form>
             </div>
 
             <button id="start" onclick="game.start()">Iniciar</button>
 
-            <div class="player-card yellow" onclick="showPlayerForm(this)">
+            <div class="player-card yellow" meta-color="yellow">
                 <form action="" hidden onsubmit="event.preventDefault()">
                     <input
                         type="text"
@@ -47,12 +42,7 @@
                         title="Nome do jogador"
                         required
                     />
-                    <button
-                        type="submit"
-                        onclick="createPlayerFromCard(this.parentElement, 'yellow', 13)"
-                    >
-                        Adicionar
-                    </button>
+                    <button type="submit">Adicionar</button>
                 </form>
             </div>
 
@@ -219,7 +209,7 @@
                 </div>
             </div>
 
-            <div class="player-card red" onclick="showPlayerForm(this)">
+            <div class="player-card red" meta-color="red">
                 <form action="" hidden onsubmit="event.preventDefault()">
                     <input
                         type="text"
@@ -228,15 +218,10 @@
                         title="Nome do jogador"
                         required
                     />
-                    <button
-                        type="submit"
-                        onclick="createPlayerFromCard(this.parentElement, 'red', 39)"
-                    >
-                        Adicionar
-                    </button>
+                    <button type="submit">Adicionar</button>
                 </form>
             </div>
-            <div class="player-card blue" onclick="showPlayerForm(this)">
+            <div class="player-card blue" meta-color="blue">
                 <form action="" hidden onsubmit="event.preventDefault()">
                     <input
                         type="text"
@@ -245,15 +230,11 @@
                         title="Nome do jogador"
                         required
                     />
-                    <button
-                        type="submit"
-                        onclick="createPlayerFromCard(this.parentElement, 'blue', 26)"
-                    >
-                        Adicionar
-                    </button>
+                    <button type="submit">Adicionar</button>
                 </form>
             </div>
         </div>
+        <script src="./scripts.js" type="module"></script>
         <script src="./index.js" type="module"></script>
     </body>
 </html>
