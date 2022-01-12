@@ -1,3 +1,7 @@
+import Table from './table.js';
+
+var table = new Table();
+
 class Piece {
     constructor(color, startCellId, lockId) {
         this.startCell = table.cells[startCellId];
@@ -6,6 +10,7 @@ class Piece {
         this.face = document.createElement('div');
         this.face.className = `piece ${color}`;
         this.clickEvent = false;
+        this.finalPath = [];
 
         this.face.addEventListener('click', () => {
             if (this.clickEvent) {
@@ -13,6 +18,22 @@ class Piece {
                 game.currentPlayer.startPlay();
             }
         });
+
+        for (let i = 0; i < 5; i++) {
+            this.finalPath.push({
+                htmlElement: document.getElementById(`${color}-final-${i}`),
+                pieces: [],
+                safe: true,
+                popPiece(el) {
+                    this.htmlElement.removeChild(el.face);
+                    return this.pieces.splice(this.pieces.indexOf(el), 1);
+                },
+                addPiece(el) {
+                    this.htmlElement.appendChild(el.face);
+                    this.pieces.push(el);
+                },
+            });
+        }
 
         this.reset();
     }
@@ -25,6 +46,7 @@ class Piece {
         this.pos = -1;
         this.steps = 0;
         this.locked = true;
+        this.path = table.cells;
     }
 
     unlock() {
@@ -33,7 +55,7 @@ class Piece {
         console.log('desbloqueado at:', this.pos);
         this.locked = false;
     }
-
+    /////////////////////////////////////////////////////////////
     move(n) {
         console.log('movendo', n, (this.pos + n) % 52);
         if (this.locked) {
@@ -43,14 +65,24 @@ class Piece {
             } else return false;
         }
 
-        table.cells[this.pos].popPiece(this);
-        //check cells
-        this.pos = (this.pos + n) % 52;
-        if (table.checkForKill(this, this.pos)) {
-            game.lockDiceRoll = false;
-            game.lockDiceSelect = true;
-        }
-        table.cells[this.pos].addPiece(this);
+        if (this.steps + n < 57) {
+            this.steps = this.steps + n;
+            this.path[this.pos].popPiece(this);
+
+            if (this.steps > 50) {
+                console.log('chegou na reta final');
+                this.pos = 0;
+                this.path = this.finalPath;
+                n = n - 51;
+            }
+            this.pos = (this.pos + n) % 52;
+            if (table.checkForKill(this, this.pos)) {
+                game.lockDiceRoll = false;
+                game.lockDiceSelect = true;
+            }
+            this.path[this.pos].addPiece(this);
+        } else return false;
+
         return true;
     }
 }
@@ -248,7 +280,7 @@ const game = {
     },
 };
 
-const table = {
+/*const table = {
     cells: [],
 
     checkForKill(piece, n) {
@@ -285,7 +317,7 @@ for (let i = 0; i < 52; i++) {
             this.pieces.push(el);
         },
     });
-}
+}*/
 
 const mainContainer = document.getElementById('main-container');
 var diceCount = 0;
