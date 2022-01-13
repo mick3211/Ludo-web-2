@@ -1,10 +1,11 @@
+import { game } from './index.js';
 import { GreenPiece, YellowPiece, RedPiece, BluePiece } from './piece.js';
 
 class Player {
     constructor(name, color) {
-        /*if (game.playerList.length >= 4) {
+        if (game.playerList.length >= 4) {
             throw new Error('Número máximo de jogadores atingido');
-        }*/
+        }
 
         let pieceClass;
 
@@ -34,7 +35,7 @@ class Player {
             new pieceClass(`${color}-lock-3`),
         ];
 
-        //game.addPlayer(this);
+        game.addPlayer(this);
     }
 
     resetPiecesStyle() {

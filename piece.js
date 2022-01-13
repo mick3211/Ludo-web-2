@@ -8,10 +8,10 @@ class Piece {
         this.clickEvent = false;
 
         this.face.addEventListener('click', () => {
-            if (this.clickEvent) {
-                this.move(game.useSelectedDice());
-                game.currentPlayer.startPlay();
-            }
+            //if (this.clickEvent) {
+            this.move(6);
+            //game.currentPlayer.startPlay();
+            //}
         });
 
         this.reset();
@@ -25,18 +25,17 @@ class Piece {
         this.pos = -1;
         this.steps = 0;
         this.locked = true;
-        this.path = table.cells;
     }
 
     unlock() {
-        this.path[this.startPos].addPiece(this);
-        this.pos = table.cells.indexOf(this.startCell);
+        this.path.cells[this.startPos].addPiece(this);
+        this.pos = this.startPos;
         console.log('desbloqueado at:', this.pos);
         this.locked = false;
     }
     /////////////////////////////////////////////////////////////
     move(n) {
-        console.log('movendo', n, (this.pos + n) % 52);
+        console.log('movendo ' + n + ' casas');
         if (this.locked) {
             if (n === 6) {
                 this.unlock();
@@ -46,20 +45,18 @@ class Piece {
 
         if (this.steps + n < 57) {
             this.steps = this.steps + n;
-            this.path[this.pos].popPiece(this);
+            this.path.cells[this.pos].popPiece(this);
 
-            if (this.steps > 50) {
-                console.log('chegou na reta final');
-                this.pos = 0;
-                this.path = this.finalPath;
-                n = n - 51;
-            }
             this.pos = (this.pos + n) % 52;
-            if (table.checkForKill(this, this.pos)) {
+            if (this.steps > 50) {
+                this.pos = this.steps - 51;
+                this.path = this.finalPath;
+            }
+            if (this.path.checkForKill(this, this.pos)) {
                 game.lockDiceRoll = false;
                 game.lockDiceSelect = true;
             }
-            this.path[this.pos].addPiece(this);
+            this.path.cells[this.pos].addPiece(this);
         } else return false;
 
         return true;

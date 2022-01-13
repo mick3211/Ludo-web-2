@@ -1,5 +1,6 @@
 import Player from './player.js';
 import Dice from './dice.js';
+import { game } from './index.js';
 
 const cards = document.getElementsByClassName('player-card');
 for (let card of cards) {
