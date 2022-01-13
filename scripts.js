@@ -20,7 +20,7 @@ for (let card of cards) {
     });
 }
 
-//Script de rolar dados
+//Lógica de rolar dados
 const mainContainer = document.getElementById('main-container');
 var diceCount = 0;
 mainContainer.addEventListener('click', function (ev) {
@@ -32,10 +32,9 @@ mainContainer.addEventListener('click', function (ev) {
         if (++diceCount === 3 && dice.value === 6) {
             game.clearDices();
             diceCount = 0;
-            game.nextPlayer();
+            movePieceState();
         } else if (dice.value !== 6) {
             movePieceState();
-            //game.currentPlayer.startPlay();
             diceCount = 0;
         }
     }

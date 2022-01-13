@@ -8,20 +8,20 @@ class Piece {
         this.lock = document.getElementById(lockId);
         this.face = document.createElement('div');
         this.clickEvent = false;
+        this.reset();
 
         this.face.addEventListener('click', () => {
             if (this.clickEvent) {
-                this.move(game.useSelectedDice());
-                movePieceState();
+                if (!this.move(game.useSelectedDice())) {
+                    movePieceState();
+                }
             }
         });
-
-        this.reset();
     }
 
     reset() {
         if (this.pos) {
-            table.cells[this.pos].popPiece(this);
+            this.path.cells[this.pos].popPiece(this);
         }
         this.lock.appendChild(this.face);
         this.pos = -1;
@@ -34,14 +34,16 @@ class Piece {
         this.pos = this.startPos;
         console.log('desbloqueado at:', this.pos);
         this.locked = false;
+        movePieceState();
     }
     /////////////////////////////////////////////////////////////
     move(n) {
         console.log('movendo ' + n + ' casas');
+        let kill = false;
         if (this.locked) {
             if (n === 6) {
                 this.unlock();
-                return true;
+                return false;
             } else return false;
         }
 
@@ -54,13 +56,15 @@ class Piece {
                 this.pos = this.steps - 51;
                 this.path = this.finalPath;
             }
+
             if (this.path.checkForKill(this, this.pos)) {
                 rollDiceState();
+                kill = true;
             }
             this.path.cells[this.pos].addPiece(this);
         } else return false;
 
-        return true;
+        return kill;
     }
 }
 

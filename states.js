@@ -15,6 +15,7 @@ export function movePieceState() {
 }
 
 function startPlay() {
+    console.log('Started', 'dados', game.diceList);
     if (game.diceList.length > 0) {
         game.selectedDice = game.diceList[0];
         if (game.avaliablePieces.length === 0) {
@@ -25,6 +26,7 @@ function startPlay() {
             startPlay();
         }
     } else {
+        console.log('Finished');
         game.nextPlayer();
     }
 }
