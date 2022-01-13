@@ -1,4 +1,5 @@
-//import { game } from './index';
+import { lockDiceSelect } from './states.js';
+import { game } from './index.js';
 
 class Dice {
     constructor(sides) {
@@ -6,11 +7,11 @@ class Dice {
         this.face = document.createElement('div');
         this.face.className = 'dice';
 
-        /*this.face.addEventListener('click', () => {
-            if (!game.lockDiceSelect) {
+        this.face.addEventListener('click', () => {
+            if (!lockDiceSelect) {
                 game.selectedDice = this;
             }
-        });*/
+        });
 
         this.roll();
     }

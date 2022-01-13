@@ -1,5 +1,6 @@
 import Player from './player.js';
 import Dice from './dice.js';
+import { lockDiceRoll, movePieceState } from './states.js';
 import { game } from './index.js';
 
 const cards = document.getElementsByClassName('player-card');
@@ -19,24 +20,24 @@ for (let card of cards) {
     });
 }
 
+//Script de rolar dados
 const mainContainer = document.getElementById('main-container');
 var diceCount = 0;
 mainContainer.addEventListener('click', function (ev) {
-    if (ev.target === this /*&& !game.lockDiceRoll*/) {
+    if (ev.target === this && !lockDiceRoll) {
         const dice = new Dice(6);
         dice.draw(ev.target, ev.layerX, ev.layerY);
-        /*game.diceList.push(dice);
+        game.diceList.push(dice);
 
         if (++diceCount === 3 && dice.value === 6) {
             game.clearDices();
             diceCount = 0;
             game.nextPlayer();
         } else if (dice.value !== 6) {
-            game.lockDiceRoll = true;
-            game.lockDiceSelect = false;
-            game.currentPlayer.startPlay();
+            movePieceState();
+            //game.currentPlayer.startPlay();
             diceCount = 0;
-        }*/
+        }
     }
 });
 

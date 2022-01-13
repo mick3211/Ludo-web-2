@@ -50,7 +50,7 @@ class Player {
 
         this.resetPiecesStyle();
 
-        playerPieces.forEach(piece => {
+        this.pieces.forEach(piece => {
             if (
                 (!piece.locked && piece.steps + value < 57) ||
                 (piece.locked && value === 6)
@@ -58,7 +58,7 @@ class Player {
                 validPieces.push(piece);
             }
         });
-        return validPieces.length > 0 ? validPieces : false;
+        return validPieces;
     }
 
     /*startPlay() {

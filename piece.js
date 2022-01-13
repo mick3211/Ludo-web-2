@@ -1,4 +1,6 @@
 import { table } from './index.js';
+import { movePieceState, rollDiceState } from './states.js';
+import { game } from './index.js';
 
 class Piece {
     constructor(lockId) {
@@ -8,10 +10,10 @@ class Piece {
         this.clickEvent = false;
 
         this.face.addEventListener('click', () => {
-            //if (this.clickEvent) {
-            this.move(6);
-            //game.currentPlayer.startPlay();
-            //}
+            if (this.clickEvent) {
+                this.move(game.useSelectedDice());
+                movePieceState();
+            }
         });
 
         this.reset();
@@ -53,8 +55,7 @@ class Piece {
                 this.path = this.finalPath;
             }
             if (this.path.checkForKill(this, this.pos)) {
-                game.lockDiceRoll = false;
-                game.lockDiceSelect = true;
+                rollDiceState();
             }
             this.path.cells[this.pos].addPiece(this);
         } else return false;

@@ -1,5 +1,5 @@
-import Dice from './dice.js';
 import Table from './table.js';
+import { rollDiceState, lockDiceSelect } from './states.js';
 
 export var table = new Table();
 
@@ -7,9 +7,6 @@ export const game = {
     playerList: [],
     diceList: [],
     _selectedDice: null,
-    lockDiceRoll: true,
-    lockDiceSelect: true,
-    avaliablePieces: null,
 
     addPlayer(player) {
         this.playerList.push(player);
@@ -21,8 +18,7 @@ export const game = {
             (this.playerList.indexOf(this.currentPlayer) + 1) %
             this.playerList.length;
 
-        this.lockDiceRoll = false;
-        this.lockDiceSelect = true;
+        rollDiceState();
 
         for (let dice of this.diceList) {
             this.selectedDice = dice;
@@ -33,25 +29,6 @@ export const game = {
         console.log('jogador atual:', this.currentPlayer);
     },
 
-    /*filterPieces(value) {
-        const validPieces = [];
-        const playerPieces = this.currentPlayer.pieces;
-
-        this.currentPlayer.resetPiecesStyle();
-
-        playerPieces.forEach(piece => {
-            if (
-                (!piece.locked && piece.steps + value < 57) ||
-                (piece.locked && value === 6)
-            ) {
-                piece.face.classList.add('valid');
-                piece.clickEvent = true;
-                validPieces.push(piece);
-            }
-        });
-        this.avaliablePieces = validPieces;
-    },*/
-
     useSelectedDice() {
         const dice = this.selectedDice;
 
@@ -60,22 +37,33 @@ export const game = {
         return this.diceList.splice(this.diceList.indexOf(dice), 1)[0].value;
     },
 
-    /**
-     * @param {Dice} dice
-     */
     set selectedDice(dice) {
-        if (!this.lockDiceSelect) {
+        if (!lockDiceSelect) {
             if (this.selectedDice) this.selectedDice.face.className = 'dice';
 
             dice.face.classList.add('selected');
             this._selectedDice = dice;
         }
+        console.log('dado selecionado', this.selectedDice);
 
-        this.filterPieces(dice.value);
+        this.avaliablePieces = this.currentPlayer.filterPieces(dice.value);
     },
 
     get selectedDice() {
         return this._selectedDice;
+    },
+
+    set avaliablePieces(pieces) {
+        this.currentPlayer.resetPiecesStyle();
+        this._avaliablePieces = pieces;
+        for (let piece of pieces) {
+            piece.face.classList.add('valid');
+            piece.clickEvent = true;
+        }
+    },
+
+    get avaliablePieces() {
+        return this._avaliablePieces;
     },
 
     start() {
@@ -84,7 +72,7 @@ export const game = {
                 'São necessários pelo menos 2 jogadores para iniciar o jogo!'
             );
         } else {
-            this.lockDiceRoll = false;
+            rollDiceState();
             document.getElementById('start').hidden = true;
             console.log('Jogo Iniciado');
             this.currentPlayer = this.playerList[0];
