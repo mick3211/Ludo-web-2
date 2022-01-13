@@ -60,22 +60,5 @@ class Player {
         });
         return validPieces;
     }
-
-    /*startPlay() {
-        if (game.lockDiceRoll) {
-            if (game.diceList.length > 0) {
-                game.selectedDice = game.diceList[0];
-                if (game.avaliablePieces.length === 0) {
-                    game.useSelectedDice();
-                    this.startPlay();
-                } else if (game.avaliablePieces.length === 1) {
-                    game.avaliablePieces[0].move(game.useSelectedDice());
-                    this.startPlay();
-                }
-            } else {
-                game.nextPlayer();
-            }
-        }
-    }*/
 }
 export default Player;
