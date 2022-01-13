@@ -45,6 +45,22 @@ class Player {
         }
     }
 
+    filterPieces(value) {
+        const validPieces = [];
+
+        this.resetPiecesStyle();
+
+        playerPieces.forEach(piece => {
+            if (
+                (!piece.locked && piece.steps + value < 57) ||
+                (piece.locked && value === 6)
+            ) {
+                validPieces.push(piece);
+            }
+        });
+        return validPieces.length > 0 ? validPieces : false;
+    }
+
     /*startPlay() {
         if (game.lockDiceRoll) {
             if (game.diceList.length > 0) {

@@ -33,7 +33,7 @@ export const game = {
         console.log('jogador atual:', this.currentPlayer);
     },
 
-    filterPieces(value) {
+    /*filterPieces(value) {
         const validPieces = [];
         const playerPieces = this.currentPlayer.pieces;
 
@@ -50,7 +50,7 @@ export const game = {
             }
         });
         this.avaliablePieces = validPieces;
-    },
+    },*/
 
     useSelectedDice() {
         const dice = this.selectedDice;
