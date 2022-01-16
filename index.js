@@ -15,6 +15,8 @@ export const game = {
     },
 
     nextPlayer() {
+        if (this.playerList.length === 1) return;
+
         document
             .getElementById(`${this.currentPlayer.color}-card`)
             .classList.remove('valid');
@@ -22,6 +24,7 @@ export const game = {
             (this.currentPlayerId + 1) % this.playerList.length;
 
         this.clearDices();
+        this.checkWinner();
 
         this.currentPlayer = this.playerList[this.currentPlayerId];
         if (this.currentPlayer.win) {
