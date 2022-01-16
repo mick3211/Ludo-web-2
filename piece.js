@@ -76,7 +76,7 @@ class Piece {
 
 export class GreenPiece extends Piece {
     constructor(lockId, player) {
-        super(lockId);
+        super(lockId, player);
         this.color = 'green';
         this.startPos = 0;
         this.face.className = 'piece green';
@@ -86,7 +86,7 @@ export class GreenPiece extends Piece {
 }
 export class YellowPiece extends Piece {
     constructor(lockId, player) {
-        super(lockId);
+        super(lockId, player);
         this.color = 'yellow';
         this.startPos = 13;
         this.face.className = 'piece yellow';
@@ -96,7 +96,7 @@ export class YellowPiece extends Piece {
 }
 export class BluePiece extends Piece {
     constructor(lockId, player) {
-        super(lockId);
+        super(lockId, player);
         this.color = 'blue';
         this.startPos = 26;
         this.face.className = 'piece blue';
@@ -106,7 +106,7 @@ export class BluePiece extends Piece {
 }
 export class RedPiece extends Piece {
     constructor(lockId, player) {
-        super(lockId);
+        super(lockId, player);
         this.color = 'red';
         this.startPos = 39;
         this.face.className = 'piece red';
