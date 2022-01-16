@@ -14,6 +14,14 @@ class Cell {
         this.htmlElement.appendChild(el.face);
         this.pieces.push(el);
     }
+
+    organize() {
+        console.log('organizando peças...', this);
+        for (let i = 0; i < this.pieces.length; i++) {
+            const piece = this.pieces[i];
+            piece.face.style.transform = `translateX(-${3 * i}px)`;
+        }
+    }
 }
 
 class Path {

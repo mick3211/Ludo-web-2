@@ -27,6 +27,7 @@ class Piece {
         this.pos = -1;
         this.steps = 0;
         this.locked = true;
+        this.path = table.mainPath;
     }
 
     unlock() {
@@ -39,7 +40,7 @@ class Piece {
     /////////////////////////////////////////////////////////////
     move(n) {
         console.log('movendo ' + n + ' casas');
-        let kill = false;
+        let roll = false;
         if (this.locked) {
             if (n === 6) {
                 this.unlock();
@@ -50,6 +51,7 @@ class Piece {
         if (this.steps + n < 57) {
             this.steps = this.steps + n;
             this.path.cells[this.pos].popPiece(this);
+            this.path.cells[this.pos].organize();
 
             this.pos = (this.pos + n) % 52;
             if (this.steps > 50) {
@@ -57,14 +59,15 @@ class Piece {
                 this.path = this.finalPath;
             }
 
-            if (this.path.checkForKill(this, this.pos)) {
+            if (this.path.checkForKill(this, this.pos) || this.steps === 56) {
                 rollDiceState();
-                kill = true;
+                roll = true;
             }
             this.path.cells[this.pos].addPiece(this);
+            this.path.cells[this.pos].organize();
         } else return false;
 
-        return kill;
+        return roll;
     }
 }
 
