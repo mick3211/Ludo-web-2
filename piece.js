@@ -36,7 +36,6 @@ class Piece {
         this.pos = this.startPos;
         console.log('desbloqueado at:', this.pos);
         this.locked = false;
-        movePieceState();
     }
     /////////////////////////////////////////////////////////////
     move(n) {
