@@ -3,6 +3,11 @@ import { game } from './index.js';
 export var lockDiceRoll = true;
 export var lockDiceSelect = true;
 
+export function waitState() {
+    lockDiceRoll = true;
+    lockDiceSelect = true;
+}
+
 export function rollDiceState() {
     lockDiceRoll = false;
     lockDiceSelect = true;

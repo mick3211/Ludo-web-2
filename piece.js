@@ -2,6 +2,8 @@ import { table } from './index.js';
 import { movePieceState, rollDiceState } from './states.js';
 import { game } from './index.js';
 
+const animation = 'animate__animated animate__fadeInDown';
+
 class Piece {
     constructor(lockId, player) {
         this.path = table.mainPath;
@@ -79,7 +81,7 @@ export class GreenPiece extends Piece {
         super(lockId, player);
         this.color = 'green';
         this.startPos = 0;
-        this.face.className = 'piece green';
+        this.face.className = 'piece green ' + animation;
         this.mainPath = table.mainPath;
         this.finalPath = table.greenPath;
     }
@@ -89,7 +91,7 @@ export class YellowPiece extends Piece {
         super(lockId, player);
         this.color = 'yellow';
         this.startPos = 13;
-        this.face.className = 'piece yellow';
+        this.face.className = 'piece yellow ' + animation;
         this.mainPath = table.mainPath;
         this.finalPath = table.yellowPath;
     }
@@ -99,7 +101,7 @@ export class BluePiece extends Piece {
         super(lockId, player);
         this.color = 'blue';
         this.startPos = 26;
-        this.face.className = 'piece blue';
+        this.face.className = 'piece blue ' + animation;
         this.mainPath = table.mainPath;
         this.finalPath = table.bluePath;
     }
@@ -109,7 +111,7 @@ export class RedPiece extends Piece {
         super(lockId, player);
         this.color = 'red';
         this.startPos = 39;
-        this.face.className = 'piece red';
+        this.face.className = 'piece red ' + animation;
         this.mainPath = table.mainPath;
         this.finalPath = table.redPath;
     }

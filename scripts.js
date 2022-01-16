@@ -1,6 +1,6 @@
 import Player from './player.js';
 import Dice from './dice.js';
-import { lockDiceRoll, movePieceState } from './states.js';
+import { lockDiceRoll, movePieceState, rollDiceState } from './states.js';
 import { game } from './index.js';
 
 const cards = document.getElementsByClassName('player-card');
@@ -28,16 +28,19 @@ mainContainer.addEventListener('click', function (ev) {
         const dice = new Dice(6);
         dice.draw(ev.target, ev.layerX, ev.layerY);
         game.diceList.push(dice);
-
-        if (++diceCount === 3 && dice.value === 6) {
-            game.clearDices();
-            diceCount = 0;
-            movePieceState();
-        } else if (dice.value !== 6) {
-            movePieceState();
-            diceCount = 0;
-        }
     }
+});
+
+window.addEventListener('diceAnimation', function (ev) {
+    if (++diceCount === 3 && ev.detail.n === 6) {
+        game.clearDices();
+        diceCount = 0;
+        movePieceState();
+    } else if (ev.detail.n !== 6) {
+        movePieceState();
+        diceCount = 0;
+    } else rollDiceState();
+    console.log('acabou a animação', ev.detail.n);
 });
 
 document.getElementById('start').addEventListener('click', () => game.start());

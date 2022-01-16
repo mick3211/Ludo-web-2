@@ -1,16 +1,35 @@
-import { lockDiceSelect } from './states.js';
+import { lockDiceSelect, waitState } from './states.js';
 import { game } from './index.js';
+
+const animation = 'rotate-hor-center';
 
 class Dice {
     constructor(sides) {
         this.sides = sides;
         this.face = document.createElement('div');
-        this.face.className = 'dice';
+        this.face.className = 'dice ' + animation;
 
         this.face.addEventListener('click', () => {
             if (!lockDiceSelect) {
                 game.selectedDice = this;
             }
+        });
+
+        this.face.addEventListener('animationstart', () => {
+            waitState();
+        });
+
+        this.face.addEventListener('animationend', () => {
+            this.face.innerText = this.value;
+            let ev = new CustomEvent('diceAnimation', {
+                detail: {
+                    n: this.value,
+                },
+            });
+
+            setTimeout(() => {
+                window.dispatchEvent(ev);
+            }, 500);
         });
 
         this.roll();
@@ -33,7 +52,7 @@ class Dice {
      */
     set value(value) {
         this._value = value;
-        this.face.innerText = this._value;
+        //this.face.innerText = this._value;
     }
 
     get value() {
