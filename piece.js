@@ -63,7 +63,9 @@ class Piece {
                 rollDiceState();
                 roll = true;
             }
-            if (this.steps === 56) this.player.score++;
+            if (this.steps === 56) {
+                this.player.score++;
+            }
             this.path.cells[this.pos].addPiece(this);
             this.path.cells[this.pos].organize();
         } else return false;

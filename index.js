@@ -15,6 +15,9 @@ export const game = {
     },
 
     nextPlayer() {
+        document
+            .getElementById(`${this.currentPlayer.color}-card`)
+            .classList.remove('valid');
         this.currentPlayerId =
             (this.currentPlayerId + 1) % this.playerList.length;
 
@@ -25,6 +28,9 @@ export const game = {
             this.nextPlayer();
         } else {
             console.log('jogador atual:', this.currentPlayer);
+            document
+                .getElementById(`${this.currentPlayer.color}-card`)
+                .classList.add('valid');
             rollDiceState();
         }
     },
