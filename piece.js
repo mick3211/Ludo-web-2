@@ -3,8 +3,9 @@ import { movePieceState, rollDiceState } from './states.js';
 import { game } from './index.js';
 
 class Piece {
-    constructor(lockId) {
+    constructor(lockId, player) {
         this.path = table.mainPath;
+        this.player = player;
         this.lock = document.getElementById(lockId);
         this.face = document.createElement('div');
         this.clickEvent = false;
@@ -63,6 +64,7 @@ class Piece {
                 rollDiceState();
                 roll = true;
             }
+            if (this.steps === 56) this.player.score++;
             this.path.cells[this.pos].addPiece(this);
             this.path.cells[this.pos].organize();
         } else return false;
@@ -72,7 +74,7 @@ class Piece {
 }
 
 export class GreenPiece extends Piece {
-    constructor(lockId) {
+    constructor(lockId, player) {
         super(lockId);
         this.color = 'green';
         this.startPos = 0;
@@ -82,7 +84,7 @@ export class GreenPiece extends Piece {
     }
 }
 export class YellowPiece extends Piece {
-    constructor(lockId) {
+    constructor(lockId, player) {
         super(lockId);
         this.color = 'yellow';
         this.startPos = 13;
@@ -92,7 +94,7 @@ export class YellowPiece extends Piece {
     }
 }
 export class BluePiece extends Piece {
-    constructor(lockId) {
+    constructor(lockId, player) {
         super(lockId);
         this.color = 'blue';
         this.startPos = 26;
@@ -102,7 +104,7 @@ export class BluePiece extends Piece {
     }
 }
 export class RedPiece extends Piece {
-    constructor(lockId) {
+    constructor(lockId, player) {
         super(lockId);
         this.color = 'red';
         this.startPos = 39;

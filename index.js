@@ -15,19 +15,18 @@ export const game = {
     },
 
     nextPlayer() {
-        const next =
-            (this.playerList.indexOf(this.currentPlayer) + 1) %
-            this.playerList.length;
+        this.currentPlayerId =
+            (this.currentPlayerId + 1) % this.playerList.length;
 
-        rollDiceState();
+        this.clearDices();
 
-        for (let dice of this.diceList) {
-            this.selectedDice = dice;
-            this.useSelectedDice;
+        this.currentPlayer = this.playerList[this.currentPlayerId];
+        if (this.currentPlayer.win) {
+            this.nextPlayer();
+        } else {
+            console.log('jogador atual:', this.currentPlayer);
+            rollDiceState();
         }
-
-        this.currentPlayer = this.playerList[next];
-        console.log('jogador atual:', this.currentPlayer);
     },
 
     useSelectedDice() {
@@ -77,6 +76,7 @@ export const game = {
             document.getElementById('start').hidden = true;
             console.log('Jogo Iniciado');
             this.currentPlayer = this.playerList[0];
+            this.currentPlayerId = 0;
             console.log('jogador atual:', this.currentPlayer);
         }
     },
@@ -86,5 +86,11 @@ export const game = {
             dice.face.remove();
         }
         this.diceList = [];
+    },
+
+    checkWinner() {
+        if (this.currentPlayer.score === 4) {
+            this.currentPlayer.win = true;
+        }
     },
 };

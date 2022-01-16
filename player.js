@@ -28,11 +28,13 @@ class Player {
 
         this.name = name;
         this.color = color;
+        this.score = 0;
+        this.win = false;
         this.pieces = [
-            new pieceClass(`${color}-lock-0`),
-            new pieceClass(`${color}-lock-1`),
-            new pieceClass(`${color}-lock-2`),
-            new pieceClass(`${color}-lock-3`),
+            new pieceClass(`${color}-lock-0`, this),
+            new pieceClass(`${color}-lock-1`, this),
+            new pieceClass(`${color}-lock-2`, this),
+            new pieceClass(`${color}-lock-3`, this),
         ];
 
         game.addPlayer(this);
