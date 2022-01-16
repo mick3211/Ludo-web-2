@@ -141,8 +141,10 @@ body {
     position: relative;
 }
 
-.meio > div {
+#final > .meio {
     width: 0;
+    position: relative;
+    overflow: visible;
     border-top: calc(100vw / 10) solid var(--yellow);
     border-bottom: calc(100vw / 10) solid var(--red);
     border-left: calc(100vw / 10) solid var(--green);
@@ -250,7 +252,7 @@ body {
 }
 
 @media screen and (min-width: 830px) {
-    .meio > div {
+    #final > .meio {
         border-top: 79.6px solid var(--yellow);
         border-bottom: 79.6px solid var(--red);
         border-left: 79.6px solid var(--green);

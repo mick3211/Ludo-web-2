@@ -3,6 +3,7 @@ import { rollDiceState, lockDiceSelect } from './states.js';
 
 export var table = new Table();
 
+//logica para finalizar o jogo
 export const game = {
     playerList: [],
     diceList: [],

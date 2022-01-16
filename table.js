@@ -47,6 +47,7 @@ class Table {
         this.redPath = new Path([]);
         this.bluePath = new Path([]);
         this.yellowPath = new Path([]);
+        this.final = new Cell('final');
 
         for (let i = 0; i < 52; i++) {
             const cell = new Cell(`cell-${i}`);
@@ -58,6 +59,7 @@ class Table {
                 const cell = new Cell(`${color}-final-${i}`);
                 eval(`this.${color}Path.cells.push(cell)`);
             }
+            eval(`this.${color}Path.cells.push(this.final)`);
         }
     }
 }
